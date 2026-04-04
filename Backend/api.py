@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify ,request
 from flask_cors import CORS
 import numpy as np
 import time
@@ -66,8 +66,6 @@ def train_stream():
 # =======================
 @app.route("/simulate", methods=["GET"])
 def simulate():
-    from flask import request
-
     # Parse query parameters
     state = int(request.args.get("state", 0))
     price = int(request.args.get("price", 10))

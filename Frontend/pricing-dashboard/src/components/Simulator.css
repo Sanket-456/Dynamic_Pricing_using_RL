@@ -5,6 +5,9 @@
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
+  margin-top: 40px;
+  border-top: 2px solid #ddd;
+  padding-top: 20px;
 }
 
 .simulator h2 {
@@ -44,4 +47,50 @@
 .results {
   margin-top: 20px;
   font-size: 1.2rem;
+}
+
+/* Comparison Cards */
+.comparison {
+  display: flex;
+  flex-direction: column; /* Outer container in column layout */
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.comparison-cards {
+  display: flex;
+  flex-direction: row; /* Inner container for cards in row layout */
+  gap: 20px;
+}
+
+.comparison .card {
+  flex: 1;
+  padding: 20px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08); /* Dark theme friendly */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #ffffff; /* Ensure text is visible on dark backgrounds */
+}
+
+/* Winning Card Highlight */
+.comparison .card.highlight {
+  border: 2px solid #22c55e;
+  background: rgba(34, 197, 94, 0.15); /* Improved contrast */
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* Difference Line */
+.comparison .difference {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #22c55e; /* Green for emphasis */
+}
+
+/* Demand Buttons */
+.demand-selector button.active {
+  background: #2575fc;
+  color: white;
+  font-weight: bold;
 }

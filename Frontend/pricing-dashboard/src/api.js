@@ -11,3 +11,10 @@ export const fetchEvaluation = async () => {
   const res = await axios.get(`${BASE}/evaluate`);
   return res.data;
 };
+
+export const fetchSimulation = async (state, price) => {
+  const res = await axios.get(`${BASE}/simulate`, {
+    params: { state, price },
+  });
+  return res.data;
+};

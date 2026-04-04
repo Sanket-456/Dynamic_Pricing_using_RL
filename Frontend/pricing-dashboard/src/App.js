@@ -6,6 +6,7 @@ import EvalChart from "./components/EvalChart";
 import QTableHeatmap from "./components/QTableHeatmap";
 import StatCard from "./components/StatCard";
 import UseCaseCard from "./components/UseCaseCard";
+import Simulator from "./components/Simulator";
 
 function App() {
   const [training, setTraining] = useState(null);
@@ -71,6 +72,8 @@ function App() {
       )}
 
       <UseCaseCard />
+
+      <Simulator trainingData={training} />
 
     </div>
   );
