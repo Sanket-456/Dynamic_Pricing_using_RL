@@ -1,8 +1,13 @@
-export default function StatCard({ title, value }) {
+import React from "react";
+import "./StatCard.css";
+
+function StatCard({ title, value }) {
   return (
-    <div className="card">
-      <h4>{title}</h4>
-      <h2>{value}</h2>
+    <div className="stat-card">
+      <div className="stat-card-title">{title}</div>
+      <div className="stat-card-value">{value}</div>
     </div>
   );
 }
+
+export default StatCard;

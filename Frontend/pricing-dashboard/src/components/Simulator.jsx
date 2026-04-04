@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './Simulator.css';
 import { fetchSimulation } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const Simulator = ({ trainingData }) => {
   const [selectedState, setSelectedState] = useState(2); // Default to High demand
@@ -9,6 +10,7 @@ const Simulator = ({ trainingData }) => {
   const [aiResult, setAiResult] = useState(null); // AI pricing result
   const [loading, setLoading] = useState(false); // Loading state
   const sliderRef = useRef(null); // Ref for the slider
+  const navigate = useNavigate();
 
   // Helper function to get AI recommended price
   const getAIPrice = () => {
@@ -49,10 +51,17 @@ const Simulator = ({ trainingData }) => {
     }
   };
 
+  if (!trainingData) {
+    return (
+      <div className="alert">
+        ⚠️ Train the model first on the Dashboard to enable AI recommendations
+        <button className="btn" onClick={() => navigate("/dashboard")}>Go to Dashboard</button>
+      </div>
+    );
+  }
+
   return (
     <div className="simulator">
-      <h2>🍕 Food Delivery Simulator</h2>
-
       {/* Demand Selector */}
       <div className="demand-selector">
         <button
