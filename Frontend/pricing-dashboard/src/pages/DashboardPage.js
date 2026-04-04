@@ -76,6 +76,7 @@ export default function DashboardPage() {
           setStatusMsg(`Training complete — ${data.rewards?.length ?? 0} episodes`);
           setIsTraining(false);
           es.close();
+          handleEvaluate(data.Q);
           return;
         }
         if (data.reward !== undefined) {
@@ -115,14 +116,27 @@ export default function DashboardPage() {
   };
 
   /* ── Evaluate ── */
-  const handleEvaluate = async () => {
-    if (!trainingData) return;
+  const handleEvaluate = async (passedQTable) => {
+    const qToEval = passedQTable || qTable;
+
+    if (!qToEval && !trainingData) {
+        setStatusMsg("Please train the model first");
+        return;
+    }
+
+    if (!qToEval) {
+        console.warn("No Q-table to evaluate.");
+        return;
+    }
+
     setIsEvaluating(true);
+    setStatusMsg("Evaluating policy...");
     try {
-      const res = await evaluateModel(liveQTable); 
+      console.log("Evaluating Q-table:", qToEval);
+      const res = await evaluateModel(qToEval); 
       console.log("Evaluation Response:", res); 
       setTrainingData((prev) => {
-        const updated = { ...prev, eval_rewards: res.eval_rewards };
+        const updated = prev ? { ...prev, eval_rewards: res.eval_rewards } : { eval_rewards: res.eval_rewards };
         return updated;
       });
       setStatusMsg("Evaluation complete");

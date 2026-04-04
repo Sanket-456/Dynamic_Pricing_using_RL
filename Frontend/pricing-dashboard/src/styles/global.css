@@ -116,7 +116,10 @@ html {
 body {
   font-family: var(--font-sans);
   font-weight: 400;
-  background: linear-gradient(135deg, #0f172a 0%, #1a2744 50%, #0f1f2e 100%);
+  
+  /* Update this line to a more blackish gradient */
+  background: linear-gradient(135deg, #111111 0%, #0a0d14 50%, #171617 100%);
+  
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
