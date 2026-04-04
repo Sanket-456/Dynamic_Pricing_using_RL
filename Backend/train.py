@@ -2,12 +2,13 @@ import numpy as np
 from config import *
 from env import PricingEnv
 
-def train():
+def train(return_q_history=False):
     Q = np.zeros((3, len(PRICES)))
     epsilon = EPSILON
 
     rewards = []
     epsilon_history = []
+    Q_history = [] # <-- Add this
 
     env = PricingEnv()
 
@@ -37,10 +38,19 @@ def train():
 
         rewards.append(total_reward)
         epsilon_history.append(epsilon)
+        
+        # <-- Snapshot the Q-table at the end of this episode
+        if return_q_history:
+            Q_history.append(Q.copy().tolist()) 
 
         if (ep + 1) % 100 == 0:
             avg_last = np.mean(rewards[-100:])
             print(f"Episode {ep+1} | Avg Reward: {avg_last:.2f} | Epsilon: {epsilon:.4f}")
 
     print("\n========== TRAINING COMPLETE ==========\n")
+    
+    # <-- Return the history if requested
+    if return_q_history:
+        return Q, rewards, epsilon_history, Q_history 
+        
     return Q, rewards, epsilon_history

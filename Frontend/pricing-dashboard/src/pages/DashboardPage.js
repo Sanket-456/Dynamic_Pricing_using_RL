@@ -15,6 +15,7 @@ export default function DashboardPage() {
   const [isEvaluating, setIsEvaluating]   = useState(false);
   const [liveRewards, setLiveRewards]     = useState([]);
   const [liveEpsilon, setLiveEpsilon]     = useState([]);
+  const [liveQTable, setLiveQTable]       = useState(null); // <-- Add this new state
   const [status, setStatus]               = useState("idle"); // idle | training | done | error
   const [statusMsg, setStatusMsg]         = useState("");
   const eventSourceRef                    = useRef(null);
@@ -23,16 +24,34 @@ export default function DashboardPage() {
   const rewards  = trainingData?.rewards  ?? liveRewards;
   const epsilons = trainingData?.epsilon ?? liveEpsilon;
   const evalData = trainingData?.eval_rewards ?? [];
-  const qTable   = trainingData?.Q ?? null;
+  const qTable   = trainingData?.Q ?? liveQTable; // <-- Change this line
 
   const avgReward  = rewards.length
     ? (rewards.reduce((a, b) => a + b, 0) / rewards.length).toFixed(1)
     : "—";
   const lastReward = rewards.length ? rewards[rewards.length - 1].toFixed(1) : "—";
   const lastEps    = epsilons.length ? epsilons[epsilons.length - 1].toFixed(4) : "—";
-  const bestPrice  = evalData.length
-    ? PRICES[evalData.indexOf(Math.max(...evalData))] || "—" // Ensure valid index
-    : "—";
+
+  let bestPrice = "—";
+
+  if (qTable && qTable.length > 0) {
+    let maxQ = -Infinity;
+    let bestActionIdx = -1;
+
+    // Scan the Q-table to find the action that yields the highest overall expected reward
+    qTable.forEach((stateRow) => {
+      stateRow.forEach((qValue, actionIdx) => {
+        if (qValue > maxQ) {
+          maxQ = qValue;
+          bestActionIdx = actionIdx;
+        }
+      });
+    });
+
+    if (bestActionIdx !== -1) {
+      bestPrice = `₹${PRICES[bestActionIdx]}`;
+    }
+  }
 
   /* ── Training via SSE ── */
   const handleTrain = () => {
@@ -42,6 +61,7 @@ export default function DashboardPage() {
     setStatusMsg("Connecting to training stream…");
     setLiveRewards([]);
     setLiveEpsilon([]);
+    setLiveQTable(null); // <-- Add this
     setTrainingData(null);
 
     const es = new EventSource("http://localhost:5000/train-stream");
@@ -61,18 +81,19 @@ export default function DashboardPage() {
         if (data.reward !== undefined) {
           setLiveRewards((prev) => {
             const updated = [...prev, data.reward];
-            console.log("Updated Rewards:", updated); // Debugging log
             return updated;
           });
         }
         if (data.epsilon !== undefined) {
           setLiveEpsilon((prev) => {
             const updated = [...prev, data.epsilon];
-            console.log("Updated Epsilon:", updated); // Debugging log
             return updated;
           });
         }
-        setStatusMsg(`Episode ${data.episode ?? "…"}`);
+        // <-- Add this block to catch the live Q-Table
+        if (data.q_table !== undefined) {
+          setLiveQTable(data.q_table);
+        }
       } catch (err) {
         console.error("Error processing stream data:", err);
       }
@@ -98,11 +119,10 @@ export default function DashboardPage() {
     if (!trainingData) return;
     setIsEvaluating(true);
     try {
-      const res = await evaluateModel();
-      console.log("Evaluation Response:", res); // Debugging log
+      const res = await evaluateModel(liveQTable); 
+      console.log("Evaluation Response:", res); 
       setTrainingData((prev) => {
         const updated = { ...prev, eval_rewards: res.eval_rewards };
-        console.log("Updated Training Data:", updated); // Debugging log
         return updated;
       });
       setStatusMsg("Evaluation complete");

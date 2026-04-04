@@ -29,15 +29,24 @@ def train_route():
 # =======================
 # EVALUATION
 # =======================
-@app.route("/evaluate", methods=["GET", "POST"])
+@app.route("/evaluate", methods=["POST"])
 def run_eval():
-    Q, rewards, epsilon = train()
-    eval_rewards = evaluate(Q)
+    try:
+        data = request.get_json()
+        Q = data.get("q_table") if data else None
 
-    return jsonify({
-        "eval_rewards": eval_rewards,
-        "avg_reward": float(np.mean(eval_rewards))
-    })
+        if Q is None:
+            Q, _, _ = train()
+
+        eval_rewards = evaluate(Q, save_plots=False)
+
+        return jsonify({
+            "eval_rewards": eval_rewards,
+            "avg_reward": float(np.mean(eval_rewards))
+        })
+    except Exception as e:
+        print(f"Evaluation Error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 # =======================
 # STREAM TRAINING (LIVE)
@@ -46,13 +55,15 @@ def run_eval():
 def train_stream():
 
     def generate():
-        Q, rewards, epsilon = train()
+        # Request the Q_history from train()
+        Q, rewards, epsilon, Q_history = train(return_q_history=True)
 
         for i in range(len(rewards)):
             data = {
                 "episode": i,
                 "reward": rewards[i],
-                "epsilon": epsilon[i]
+                "epsilon": epsilon[i],
+                "q_table": Q_history[i] # <-- Stream the live Q-table!
             }
             yield f"data: {json.dumps(data)}\n\n"
             time.sleep(0.01)

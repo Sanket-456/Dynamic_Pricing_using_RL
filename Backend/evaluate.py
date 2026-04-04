@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from config import PRICES, OUT
 from env import PricingEnv
 
-def evaluate(Q):
+def evaluate(Q, save_plots=True):
     Q = np.array(Q) 
     env = PricingEnv()
     state = env.reset()
@@ -25,14 +25,15 @@ def evaluate(Q):
         print(f"Step {step+1}: Price={price}, Reward={reward:.2f}")
         state = next_state
 
-    plt.figure()
-    plt.plot(prices_selected)
-    plt.title("Price Decisions")
-    plt.savefig(f"{OUT}/prices.png")
+    if save_plots:
+        plt.figure()
+        plt.plot(prices_selected)
+        plt.title("Price Decisions")
+        plt.savefig(f"{OUT}/prices.png")
 
-    plt.figure()
-    plt.plot(rewards)
-    plt.title("Evaluation Rewards")
-    plt.savefig(f"{OUT}/eval_rewards.png")
+        plt.figure()
+        plt.plot(rewards)
+        plt.title("Evaluation Rewards")
+        plt.savefig(f"{OUT}/eval_rewards.png")
 
     return rewards
