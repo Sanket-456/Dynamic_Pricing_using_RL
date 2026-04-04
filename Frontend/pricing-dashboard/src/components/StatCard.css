@@ -1,21 +1,107 @@
-/* StatCard styles */
+/* src/components/StatCard.css */
+
 .stat-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  border-top: 3px solid #00bcd4;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  animation: fadeIn 0.4s ease forwards;
 }
 
-.stat-card-title {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 8px;
+.stat-card:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-md);
+}
+
+/* left accent bar */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  background: var(--accent-color, var(--brand-primary));
+}
+
+/* subtle bg glow */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(
+    ellipse at top left,
+    var(--accent-glow, rgba(16,185,129,0.06)) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.stat-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.stat-card-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.stat-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: var(--accent-bg, var(--green-900));
+  border: 1px solid var(--accent-border, var(--green-border));
+  flex-shrink: 0;
 }
 
 .stat-card-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--space-2);
 }
+
+.stat-card-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.stat-card-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+}
+
+.trend-up   { color: var(--green-400); background: var(--green-900); }
+.trend-down { color: var(--red-400);   background: var(--red-900); }
+.trend-flat { color: var(--text-muted); background: var(--bg-inset); }
+
+/* color variants via CSS custom props */
+.stat-card.green  { --accent-color: var(--green-500);  --accent-glow: rgba(16,185,129,0.07);  --accent-bg: var(--green-900);  --accent-border: var(--green-border); }
+.stat-card.blue   { --accent-color: var(--blue-500);   --accent-glow: rgba(59,130,246,0.07);  --accent-bg: var(--blue-900);   --accent-border: var(--blue-border); }
+.stat-card.amber  { --accent-color: var(--amber-500);  --accent-glow: rgba(245,158,11,0.07);  --accent-bg: var(--amber-900);  --accent-border: var(--amber-border); }
+.stat-card.purple { --accent-color: var(--purple-500); --accent-glow: rgba(139,92,246,0.07);  --accent-bg: var(--purple-900); --accent-border: var(--purple-border); }
+.stat-card.red    { --accent-color: var(--red-500);    --accent-glow: rgba(239,68,68,0.07);   --accent-bg: var(--red-900);    --accent-border: var(--red-border); }

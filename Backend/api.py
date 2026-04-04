@@ -18,20 +18,18 @@ def home():
 # =======================
 # NORMAL TRAIN
 # =======================
-@app.route("/train", methods=["GET"])
-def run_training():
-    Q, rewards, epsilon = train()
-
-    return jsonify({
-        "Q": Q.tolist(),
-        "rewards": rewards,
-        "epsilon": epsilon
-    })
+@app.route("/train", methods=["GET", "POST"])
+def train_route():
+    try:
+        result = train()
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # =======================
 # EVALUATION
 # =======================
-@app.route("/evaluate", methods=["GET"])
+@app.route("/evaluate", methods=["GET", "POST"])
 def run_eval():
     Q, rewards, epsilon = train()
     eval_rewards = evaluate(Q)
@@ -59,32 +57,36 @@ def train_stream():
             yield f"data: {json.dumps(data)}\n\n"
             time.sleep(0.01)
 
+        yield f"data: {json.dumps({'done': True, 'Q': Q.tolist(), 'rewards': rewards, 'epsilon': epsilon})}\n\n"
+
     return app.response_class(generate(), mimetype='text/event-stream')
 
 # =======================
 # SIMULATE ENDPOINT
 # =======================
 @app.route("/simulate", methods=["GET"])
-def simulate():
-    # Parse query parameters
-    state = int(request.args.get("state", 0))
-    price = int(request.args.get("price", 10))
+def simulate_route():
+    try:
+        state = request.args.get("state", type=int)
+        price = request.args.get("price", type=int)
 
-    # Create PricingEnv instance and set state
-    env = PricingEnv()
-    env.state = state
+        # Create environment and set state
+        env = PricingEnv()
+        env.state = state
 
-    # Calculate demand and revenue
-    demand = env.demand(price)
-    revenue = price * demand
+        # Calculate demand and revenue
+        demand = env.demand(price)
+        revenue = price * demand
 
-    # Return response
-    return jsonify({
-        "state": state,
-        "price": price,
-        "demand": demand,
-        "revenue": revenue
-    })
+        return jsonify({
+            "success": True,
+            "state": state,
+            "price": price,
+            "demand": demand,
+            "revenue": revenue
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

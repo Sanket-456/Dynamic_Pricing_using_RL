@@ -166,7 +166,10 @@ const Simulator = ({ trainingData }) => {
             </div>
           </div>
           <p className="difference">
-            🔥 {aiResult.revenue > manualResult.revenue ? `AI earns ₹${aiResult.revenue - manualResult.revenue} more (+${((aiResult.revenue - manualResult.revenue) / manualResult.revenue * 100).toFixed(1)}%)` : `Manual earns ₹${manualResult.revenue - aiResult.revenue} more (+${((manualResult.revenue - aiResult.revenue) / aiResult.revenue * 100).toFixed(1)}%)`}
+            🔥 {aiResult.revenue > manualResult.revenue 
+              ? `AI earns ₹${(aiResult.revenue - manualResult.revenue).toFixed(0)} more (+${((aiResult.revenue - manualResult.revenue) / manualResult.revenue * 100).toFixed(1)}%)`
+              : `Manual earns ₹${(manualResult.revenue - aiResult.revenue).toFixed(0)} more (+${((manualResult.revenue - aiResult.revenue) / aiResult.revenue * 100).toFixed(1)}%)`
+            }
           </p>
         </div>
       )}
