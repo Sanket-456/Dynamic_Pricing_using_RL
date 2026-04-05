@@ -14,7 +14,7 @@ export default function DashboardPage() {
   const [isTraining, setIsTraining]       = useState(false);
   const [liveRewards, setLiveRewards]     = useState([]);
   const [liveEpsilon, setLiveEpsilon]     = useState([]);
-  const [liveQTable, setLiveQTable]       = useState(null); // <-- Add this new state
+  const [liveQTable, setLiveQTable]       = useState(null); 
   const [status, setStatus]               = useState("idle"); // idle | training | done | error
   const [statusMsg, setStatusMsg]         = useState("");
   const eventSourceRef                    = useRef(null);
@@ -23,7 +23,7 @@ export default function DashboardPage() {
   const rewards  = trainingData?.rewards  ?? liveRewards;
   const epsilons = trainingData?.epsilon ?? liveEpsilon;
   const evalData = trainingData?.eval_rewards ?? [];
-  const qTable   = trainingData?.Q ?? liveQTable; // <-- Change this line
+  const qTable   = trainingData?.Q ?? liveQTable; 
 
   const avgReward  = rewards.length
     ? (rewards.reduce((a, b) => a + b, 0) / rewards.length).toFixed(1)
@@ -60,10 +60,13 @@ export default function DashboardPage() {
     setStatusMsg("Connecting to training stream…");
     setLiveRewards([]);
     setLiveEpsilon([]);
-    setLiveQTable(null); // <-- Add this
+    setLiveQTable(null); 
     setTrainingData(null);
 
-    const es = new EventSource("http://localhost:5000/train-stream");
+    // Dynamically point to Render in production, or localhost in development
+    const API_URL = process.env.REACT_APP_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
+    const es = new EventSource(`${API_URL}/train-stream`);
+    
     eventSourceRef.current = es;
 
     es.onmessage = (e) => {
@@ -90,7 +93,6 @@ export default function DashboardPage() {
             return updated;
           });
         }
-        // <-- Add this block to catch the live Q-Table
         if (data.q_table !== undefined) {
           setLiveQTable(data.q_table);
         }
@@ -128,7 +130,6 @@ export default function DashboardPage() {
         return;
     }
 
-    
     setStatusMsg("Evaluating policy...");
     try {
       console.log("Evaluating Q-table:", qToEval);
@@ -228,7 +229,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Main Layout: charts + controls ── */}
-      <div style={{
+      <div className="dashboard-layout" style={{
         display: "grid",
         gridTemplateColumns: "1fr 300px",
         gap: "var(--space-4)",
