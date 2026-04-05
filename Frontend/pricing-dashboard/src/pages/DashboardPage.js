@@ -12,7 +12,6 @@ import { PRICES } from "../config";
 export default function DashboardPage() {
   const { trainingData, setTrainingData } = useTraining();
   const [isTraining, setIsTraining]       = useState(false);
-  const [isEvaluating, setIsEvaluating]   = useState(false);
   const [liveRewards, setLiveRewards]     = useState([]);
   const [liveEpsilon, setLiveEpsilon]     = useState([]);
   const [liveQTable, setLiveQTable]       = useState(null); // <-- Add this new state
