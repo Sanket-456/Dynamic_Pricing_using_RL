@@ -47,11 +47,11 @@
 }
 
 .stat-card-label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
 }
 
 .stat-card-icon {
@@ -65,6 +65,9 @@
   background: var(--accent-bg, var(--green-900));
   border: 1px solid var(--accent-border, var(--green-border));
   flex-shrink: 0;
+  background: var(--icon-bg, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--icon-border, rgba(255, 255, 255, 0.2));
+  border-radius: 0.625rem;
 }
 
 .stat-card-value {

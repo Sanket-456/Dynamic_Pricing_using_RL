@@ -188,7 +188,6 @@ body {
 .card-title {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }

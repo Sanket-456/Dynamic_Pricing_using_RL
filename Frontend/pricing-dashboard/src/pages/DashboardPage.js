@@ -175,7 +175,13 @@ export default function DashboardPage() {
         <StatCard
           title="Episodes"
           value={rewards.length || "—"}
-          icon="🎯"
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--accent-color)" }}>
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+            </svg>
+          }
           color="green"
           trend={rewards.length ? "up" : undefined}
           trendLabel={rewards.length ? `${rewards.length} run` : undefined}
@@ -184,7 +190,12 @@ export default function DashboardPage() {
         <StatCard
           title="Avg Reward"
           value={avgReward}
-          icon="💰"
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--accent-color)" }}>
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+          }
           color="blue"
           trend={avgReward !== "—" ? "up" : undefined}
           trendLabel={lastReward !== "—" ? `last ${lastReward}` : undefined}
@@ -193,7 +204,11 @@ export default function DashboardPage() {
         <StatCard
           title="Epsilon"
           value={lastEps}
-          icon="🎲"
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--accent-color)" }}>
+              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
+            </svg>
+          }
           color="amber"
           trend={lastEps !== "—" ? "down" : undefined}
           trendLabel={lastEps !== "—" ? "decaying" : undefined}
@@ -202,7 +217,12 @@ export default function DashboardPage() {
         <StatCard
           title="Best Price"
           value={bestPrice}
-          icon="🏷️"
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--accent-color)" }}>
+              <line x1="12" x2="12" y1="2" y2="22"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          }
           color="purple"
           trend={bestPrice !== "—" ? "flat" : undefined}
           trendLabel={bestPrice !== "—" ? "optimal" : undefined}

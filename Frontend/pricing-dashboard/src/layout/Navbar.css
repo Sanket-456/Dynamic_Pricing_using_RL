@@ -136,16 +136,18 @@
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: 0.03em;
+  font-size: 0.75rem; /* ~ text-xs */
+  font-weight: 500;   /* font-medium */
+
+  /* The new Blue Theme */
+  background: rgba(59, 130, 246, 0.1);    /* bg-blue-500/10 */
+  border: 1px solid rgba(59, 130, 246, 0.2); /* border-blue-500/20 */
+  color: #60a5fa;                         /* text-blue-400 */
+  letter-spacing: 0.02em;
 }
 
-.navbar-status .dot-green {
+.navbar-status svg {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
