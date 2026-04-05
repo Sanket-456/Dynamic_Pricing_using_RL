@@ -1,11 +1,11 @@
 // src/api.js
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
 
 /**
  * POST /train — blocking full training run
  */
 export async function trainModel() {
-  const res = await fetch(`${BASE_URL}/train`, {
+  const res = await fetch(`${API_BASE_URL}/train`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
   });
@@ -18,7 +18,7 @@ export async function trainModel() {
  * Pass q_table so backend doesn't need to load from disk
  */
 export async function evaluateModel(qTable = null) {
-  const res = await fetch(`${BASE_URL}/evaluate`, {
+  const res = await fetch(`${API_BASE_URL}/evaluate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ q_table: qTable }),
@@ -31,7 +31,7 @@ export async function evaluateModel(qTable = null) {
  * GET /simulate — run a simulation
  */
 export async function fetchSimulation(state, price) {
-  const res = await fetch(`${BASE_URL}/simulate?state=${state}&price=${price}`, {
+  const res = await fetch(`${API_BASE_URL}/simulate?state=${state}&price=${price}`, {
     method: "GET",
   });
   if (!res.ok) throw new Error(`Simulation failed: ${res.status}`);
@@ -42,18 +42,17 @@ export async function fetchSimulation(state, price) {
  * POST /evaluate — evaluate current policy
  */
 export async function fetchEvaluation(data) {
-  const res = await fetch(`${BASE_URL}/evaluate`, {
+  const res = await fetch(`${API_BASE_URL}/evaluate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error(`Evaluation failed: ${res.status}`);
-  return res.json();
 }
 
 /**
  * Returns the SSE stream URL — used directly with new EventSource()
  */
 export function getTrainStreamURL() {
-  return `${BASE_URL}/train-stream`;
+  return `${API_BASE_URL}/train-stream`;
 }
