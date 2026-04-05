@@ -245,8 +245,10 @@ export default function DashboardPage() {
             <EpsilonChart data={epsilons} />
           </div>
 
-          {evalData.length > 0 && <EvalChart data={evalData} />}
-          <QTableHeatmap Q={qTable} />
+          <div className="grid-2">
+            <EvalChart data={evalData} />
+            <QTableHeatmap Q={qTable} />
+          </div>
         </div>
 
         {/* ── Controls sidebar ── */}
@@ -275,15 +277,6 @@ export default function DashboardPage() {
                   ⏹ Stop
                 </button>
               )}
-
-              <button
-                className="btn btn-secondary w-full"
-                onClick={handleEvaluate}
-                disabled={!trainingData || isEvaluating || isTraining}
-                style={{ justifyContent: "center" }}
-              >
-                {isEvaluating ? "⏳ Evaluating…" : "🔍 Evaluate Policy"}
-              </button>
             </div>
 
             {statusMsg && (

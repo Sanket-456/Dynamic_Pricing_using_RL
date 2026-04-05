@@ -142,7 +142,7 @@
 
   /* The new Blue Theme */
   background: rgba(59, 130, 246, 0.1);    /* bg-blue-500/10 */
-  border: 1px solid rgba(59, 130, 246, 0.2); /* border-blue-500/20 */
+  border: 1px solid rgba(224, 246, 59, 0.2); /* border-blue-500/20 */
   color: #60a5fa;                         /* text-blue-400 */
   letter-spacing: 0.02em;
 }
@@ -167,5 +167,34 @@
 
   .navbar-status {
     display: none;
+  }
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 var(--space-4);
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-logo {
+    margin-bottom: var(--space-4);
   }
 }

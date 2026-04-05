@@ -100,11 +100,11 @@
 }
 
 /* ── Reset & Base ─────────────────────────────────────────── */
-*, *::before, *::after {
+/* *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
+} */
 
 html {
   font-size: 16px;
@@ -403,3 +403,29 @@ body {
 .mb-4        { margin-bottom: var(--space-4); }
 .mb-6        { margin-bottom: var(--space-6); }
 .w-full      { width: 100%; }
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .page-container {
+    padding: var(--space-6) var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: var(--space-4) var(--space-2);
+  }
+}
