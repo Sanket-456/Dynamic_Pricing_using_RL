@@ -128,7 +128,7 @@ export default function DashboardPage() {
         return;
     }
 
-    setIsEvaluating(true);
+    
     setStatusMsg("Evaluating policy...");
     try {
       console.log("Evaluating Q-table:", qToEval);
@@ -141,9 +141,7 @@ export default function DashboardPage() {
       setStatusMsg("Evaluation complete");
     } catch (_) {
       setStatusMsg("Evaluation failed");
-    } finally {
-      setIsEvaluating(false);
-    }
+    } 
   };
 
   /* ── Status badge ── */
