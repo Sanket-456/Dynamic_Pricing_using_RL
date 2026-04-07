@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import DashboardPage from "./pages/DashboardPage";
-import SimulatorPage from "./pages/SimulatorPage";
+import DashboardPage from "./pages/DashboardPage.jsx";
+import SimulatorPage from "./pages/SimulatorPage.jsx";
 import Layout from "./layout/Layout";
 import { TrainingProvider } from "./context/TrainingContext";
 

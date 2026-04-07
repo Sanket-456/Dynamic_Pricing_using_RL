@@ -1,5 +1,5 @@
 // src/api.js
-const API_BASE_URL = process.env.REACT_APP_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
 
 /**
  * POST /train — blocking full training run
