@@ -2,12 +2,48 @@
 //  NAVBAR — src/layout/Navbar.js
 // ============================================================
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const navbarRef = React.useRef(null);
+  const location = useLocation();
+
+  const closeMenu = () => setIsMenuOpen(false);
+
+  React.useEffect(() => {
+    closeMenu();
+  }, [location.pathname]);
+
+  React.useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        closeMenu();
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isMenuOpen]);
+
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={navbarRef}>
 
       {/* ── Logo ── */}
       <div className="navbar-logo">
@@ -18,11 +54,22 @@ function Navbar() {
         </div>
       </div>
 
+      <button
+        type="button"
+        className="navbar-menu-toggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded={isMenuOpen}
+        onClick={() => setIsMenuOpen((prev) => !prev)}
+      >
+        {isMenuOpen ? "✕" : "☰"}
+      </button>
+
       {/* ── Nav Links ── */}
-      <div className="navbar-links">
+      <div className={`navbar-links ${isMenuOpen ? "navbar-links-open" : ""}`}>
         <NavLink
           to="/dashboard"
           className={({ isActive }) => (isActive ? "active" : "")}
+          onClick={closeMenu}
         >
           <span className="nav-icon">📊</span>
           Dashboard
@@ -31,6 +78,7 @@ function Navbar() {
         <NavLink
           to="/simulator"
           className={({ isActive }) => (isActive ? "active" : "")}
+          onClick={closeMenu}
         >
           <span className="nav-icon">🍕</span>
           Simulator
