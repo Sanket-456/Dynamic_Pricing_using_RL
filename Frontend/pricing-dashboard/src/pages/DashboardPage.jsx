@@ -1,7 +1,7 @@
 // src/pages/DashboardPage.js
 import React, { useState, useRef } from "react";
 import { useTraining } from "../context/TrainingContext";
-import { evaluateModel } from "../api";
+import { evaluateModel, getTrainStreamURL } from "../api";
 import StatCard from "../components/StatCard";
 import RewardChart from "../components/charts/RewardChart";
 import EpsilonChart from "../components/charts/EpsilonChart";
@@ -63,9 +63,7 @@ export default function DashboardPage() {
     setLiveQTable(null); 
     setTrainingData(null);
 
-    // Dynamically point to deployed backend in production or custom Vite env URL
-    const API_URL = import.meta.env.VITE_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
-    const es = new EventSource(`${API_URL}/train-stream`);
+    const es = new EventSource(getTrainStreamURL());
     
     eventSourceRef.current = es;
 

@@ -1,5 +1,5 @@
 import numpy as np
-from config import *
+from config import ALPHA, EPSILON, EPSILON_DECAY, EPSILON_MIN, EPISODES, GAMMA, PRICES, STEPS
 from env import PricingEnv
 
 def train(return_q_history=False):
