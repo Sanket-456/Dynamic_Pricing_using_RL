@@ -85,7 +85,7 @@ function Navbar() {
         </NavLink>
       </div>
 
-      {/* ── Status Pill ── */}
+     
       <div className="navbar-right">
         <div className="navbar-status">
           <svg 
