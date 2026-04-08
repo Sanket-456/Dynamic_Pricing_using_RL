@@ -12,6 +12,10 @@ from evaluate import evaluate
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/health")
+def health():
+    return "OK", 200
+
 @app.route("/")
 def home():
     return "Dynamic Pricing RL API running"
