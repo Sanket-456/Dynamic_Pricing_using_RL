@@ -63,8 +63,8 @@ export default function DashboardPage() {
     setLiveQTable(null); 
     setTrainingData(null);
 
-    // Dynamically point to Render in production, or localhost in development
-    const API_URL = process.env.REACT_APP_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
+    // Dynamically point to deployed backend in production or custom Vite env URL
+    const API_URL = import.meta.env.VITE_API_URL || "https://dynamic-pricing-using-rl-yj1b.onrender.com";
     const es = new EventSource(`${API_URL}/train-stream`);
     
     eventSourceRef.current = es;
